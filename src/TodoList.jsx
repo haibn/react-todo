@@ -1,21 +1,6 @@
 import TodoListItem from "./TodoListItem";
 
-let todoList = [
-    {
-      id: 1,
-      title: "Complete assignment"
-    },
-    {
-      id: 2,
-      title: "Turn in assignment"
-    },
-    {
-      id: 3,
-      title: "Start new assignment"
-    }
-  ];
-
-function TodoList() {
+function TodoList({todoList}) {
     return (
         <ul>
             {todoList.map((item) => {
