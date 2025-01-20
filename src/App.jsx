@@ -34,7 +34,6 @@ function App() {
         title : todo.fields.Title,
         id: todo.id
       }));
-      console.log(todos);
 
       setTodoList(todos);
       setIsLoading(false);
@@ -56,8 +55,56 @@ function App() {
     }
   }, [todoList]);
 
+  // Post new todo to AirTable
+  async function postData(newTodo) {
+    const payload = {
+      records : [
+        {
+          fields : {
+            Title : `${newTodo.title}`
+          }
+        }
+      ]
+    }
+
+    let options = {
+      method : "POST",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify(payload)
+    };
+
+    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+      
+      const data = await response.json();
+
+      // Create new todo object with given ID from AirTable
+      const newTodoObj = {
+        title : data.records[0].fields.Title,
+        id : data.records[0].id
+      } 
+
+      return newTodoObj;
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Retrieve new todo object from AirTable with updated ID and update our todolist
   function addTodo(newTodo) {
-    setTodoList([newTodo, ...todoList])
+    postData(newTodo).then((todoObj) => {
+      setTodoList([todoObj, ...todoList]);
+    })
   }
 
   function removeTodo(id) {
