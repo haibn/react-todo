@@ -1,0 +1,14 @@
+.ListItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f8f8;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    width: 200px;
+}
+
+.button {
+    color: white;
+}
