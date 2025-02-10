@@ -1,0 +1,24 @@
+.imgPlaceHolder {
+  width: 500px;
+  height: 500px;
+  background-color: red;
+}
+
+.appContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  /* background-color: blue; */
+}
+
+.appContainer2 {
+  width: 70vw;
+  height: 100vh;
+  display: flex;
+  /* background-color: aqua; */
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: blue; */
+}

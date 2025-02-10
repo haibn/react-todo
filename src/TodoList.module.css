@@ -1,0 +1,12 @@
+ul {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background: white;
+    border-radius: 13px;
+    flex-wrap: wrap;
+    max-width: 970px;
+    max-height: 600px;
+}
