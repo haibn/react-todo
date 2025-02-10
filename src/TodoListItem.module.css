@@ -1,3 +1,4 @@
+/* Styling for list item */
 .ListItem {
     display: flex;
     justify-content: space-between;
@@ -9,6 +10,13 @@
     width: 200px;
 }
 
+/* Styling for remove button */
 .button {
     color: #2948e4;
+    border-radius: 30px;
+}
+
+.button:hover {
+    color: black;
+    background-color: white;
 }

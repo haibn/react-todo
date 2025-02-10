@@ -116,8 +116,8 @@ function App() {
   return (
     <div className={styles.appContainer}>
       <BrowserRouter>
-        <div className={styles.appContainer2}>
-          <div>
+        <div className={styles.formImgContainer}>
+          <div className={styles.todoForm}>
             <h1>Todo List</h1>
             <Routes>
               <Route path='/' element={
