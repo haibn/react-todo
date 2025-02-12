@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import styles from "./App.module.css";
 import TodoList from './TodoList'
 import AddTodoForm from './AddTodoForm'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -114,20 +114,27 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-        <h1>Todo List</h1>
-        <Routes>
-          <Route path='/' element={
-            <>
-              <AddTodoForm onAddTodo={addTodo}/>
-              {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>}
-            </>
-          }/>
-          <Route path='/new' element={
+    <div className={styles.appContainer}>
+      <BrowserRouter>
+        <div className={styles.formImgContainer}>
+          <div className={styles.todoForm}>
             <h1>Todo List</h1>
-          }/>
-        </Routes>
-    </BrowserRouter>
+            <Routes>
+              <Route path='/' element={
+                <>
+                  <AddTodoForm onAddTodo={addTodo}/>
+                  {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>}
+                </>
+              }/>
+              <Route path='/new' element={
+                <h1>Todo List</h1>
+              }/>
+            </Routes> 
+          </div>
+          <div className={styles.imgPlaceHolder}></div>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
 

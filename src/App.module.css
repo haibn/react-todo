@@ -1,0 +1,63 @@
+/* Temporary placeholder for image */
+.imgPlaceHolder {
+  min-width: 500px;
+  min-height: 500px;
+  width: 500px;
+  height: 500px;
+  background-color: red;
+  margin: 15px;
+}
+
+ /* Todo Form */
+.todoForm {
+  margin: 15px;
+}
+
+/* Div container for all */
+.appContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Div container for form and img  */
+.formImgContainer {
+  min-width: 70vw;
+  height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+h1 {
+  font-size: 33px;
+  font-weight: bolder;
+  color: aquamarine;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 965px) {
+  .formImgContainer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 500px) {
+  .imgPlaceHolder {
+    min-width: 400px;
+    min-height: 400px;
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 430px) {
+  .imgPlaceHolder {
+    min-width: 300px;
+    min-height: 300px;
+    width: 300px;
+    height: 300px;
+  }
+}

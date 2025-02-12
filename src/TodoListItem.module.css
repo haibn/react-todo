@@ -1,0 +1,22 @@
+/* Styling for list item */
+.ListItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2948e4;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    width: 200px;
+}
+
+/* Styling for remove button */
+.button {
+    color: #2948e4;
+    border-radius: 30px;
+}
+
+.button:hover {
+    color: black;
+    background-color: white;
+}
