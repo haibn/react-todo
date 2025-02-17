@@ -21,6 +21,8 @@ function App() {
       }
     }
 
+    // Fetch with "Sort by Airtable field" and "Sort with JavaScript" queries.
+    // const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view&sort[0][field]=Title&sort[0][direction]=asc`;
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 
     try {
@@ -31,7 +33,19 @@ function App() {
       }
       
       const data = await response.json();
-      const todos = data.records.map((todo) => ({
+      // Sort todos in ascending alphabetical order by Title
+      const sortedTodos = data.records.sort(
+        (todoA, todoB) => {
+          if (todoA.fields.Title < todoB.fields.Title) {
+            return -1;
+          } else if (todoA.fields.Title > todoB.fields.Title) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      )
+      const todos = sortedTodos.map((todo) => ({
         title : todo.fields.Title,
         id: todo.id
       }));
