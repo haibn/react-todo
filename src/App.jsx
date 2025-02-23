@@ -5,6 +5,7 @@ import styles from "./App.module.css";
 import TodoList from './components/TodoList'
 import AddTodoForm from './components/AddTodoForm'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import finalBossCat from './assets/cat/finalBossCat.png';
 
 function App() {
   // TodoList state
@@ -171,7 +172,7 @@ function App() {
               }/>
             </Routes> 
           </div>
-          <div className={styles.imgPlaceHolder}></div>
+          <div className={styles.imgPlaceHolder}><img src={finalBossCat}></img></div>
         </div>
       </BrowserRouter>
     </div>
