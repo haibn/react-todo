@@ -21,8 +21,6 @@ function App() {
       }
     }
 
-    // Fetch with "Sort by Airtable field" and "Sort with JavaScript" queries.
-    // const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view&sort[0][field]=Title&sort[0][direction]=asc`;
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 
     try {
@@ -115,6 +113,32 @@ function App() {
     }
   }
 
+  // Delete todo from AirTable
+  async function removeData(todoId) {
+    let options = {
+      method : "DELETE",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        'Content-Type' : 'application/json'
+      }};
+
+    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}/${todoId}`;
+    
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`)
+      }
+
+      const data = await response.json();
+      console.log(data);
+      
+    } catch (error) {
+      console.log("Failed to delete record: ", error);
+    }
+  }
+
   // Retrieve new todo object from AirTable with updated ID and update our todolist
   function addTodo(newTodo) {
     postData(newTodo).then((todoObj) => {
@@ -122,7 +146,9 @@ function App() {
     })
   }
 
-  function removeTodo(id) {
+  // Remove todo from Airtable and update our todolist without the removed todo.
+  async function removeTodo(id) {
+    await removeData(id);
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
   }
