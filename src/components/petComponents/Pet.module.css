@@ -1,0 +1,17 @@
+.catFinalBossHome {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.catCss {
+    position: absolute;
+    top: 260px;
+    left: 305px;
+    z-index: 1;
+}
+
+.wrapper {
+    transform: scale(1);
+    transform-origin: top left;
+}
