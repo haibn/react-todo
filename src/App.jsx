@@ -13,6 +13,10 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   // Loading state
   const [isLoading, setIsLoading] = useState(true);
+  // Count of completed todos
+  const [completedTodosCount, setCompletedTodosCount] = useState(0);
+  // CompletedTodosCount's id
+  const [completedTodosCountId, setCompletedTodosCountId] = useState("");
 
   // Fetching data from AirTable
   async function fetchData() {
@@ -23,7 +27,7 @@ function App() {
       }
     }
 
-    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view`;
 
     try {
       const response = await fetch(url, options);
@@ -33,8 +37,16 @@ function App() {
       }
       
       const data = await response.json();
+
+      // Stores the number of completed todos (first cell) and its id, and excludes it from fetching
+      setCompletedTodosCount(Number(data.records[0].fields.Title));
+      setCompletedTodosCountId(data.records[0].id);
+      // console.log("completedTodosCountIdFetch: ", completedTodosCountId)
+      // console.log("data: ", data)
+      const filteredData = data.records.slice(1);
+
       // Sort todos in ascending alphabetical order by Title
-      const sortedTodos = data.records.sort(
+      const sortedTodos = filteredData.sort(
         (todoA, todoB) => {
           if (todoA.fields.Title < todoB.fields.Title) {
             return -1;
@@ -115,6 +127,13 @@ function App() {
     }
   }
 
+  // Retrieve new todo object from AirTable with updated ID and update our todolist
+  function addTodo(newTodo) {
+    postData(newTodo).then((todoObj) => {
+      setTodoList([todoObj, ...todoList]);
+    })
+  }  
+
   // Delete todo from AirTable
   async function removeData(todoId) {
     let options = {
@@ -134,23 +153,70 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log("Deleted record successfully: ", data);
       
     } catch (error) {
       console.log("Failed to delete record: ", error);
     }
   }
 
-  // Retrieve new todo object from AirTable with updated ID and update our todolist
-  function addTodo(newTodo) {
-    postData(newTodo).then((todoObj) => {
-      setTodoList([todoObj, ...todoList]);
-    })
-  }
-
   // Remove todo from Airtable and update our todolist without the removed todo.
   async function removeTodo(id) {
     await removeData(id);
+    const newList = todoList.filter((item) => item.id !== id);
+    setTodoList(newList);
+    // console.log("Completed count: ", completedTodosCount)
+  }
+
+  async function updateCompletedTodosCount(id, newCount) {
+    console.log("id: ", id);
+    console.log("newCount: ", newCount);
+    const payload = {
+      records : [
+        {
+          id : id,
+          fields : {
+            "Title" : `${newCount}`
+          }
+        }
+      ]
+    }
+
+    let options = {
+      method : "PATCH",
+      headers : {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify(payload)
+    };
+
+    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+    
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`)
+      }
+
+      const data = await response.json();
+      console.log("Updated completed todos count: ", data);
+      
+    } catch (error) {
+      console.log("Failed updating completed todos count: ", error);
+    }
+        
+  }
+  
+  // Remove todo from Airtable and update our todolist without the removed todo.
+  async function completeTodo(id) {
+    await removeData(id);
+    // console.log("Completed count before: ", completedTodosCount)
+    setCompletedTodosCount(completedTodosCount + 1);
+    // console.log("completedTodosCountId: ", completedTodosCountId);
+    updateCompletedTodosCount(completedTodosCountId, completedTodosCount + 1);
+    // console.log("Completed count: ", completedTodosCount)
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
   }
@@ -165,7 +231,7 @@ function App() {
               <Route path='/' element={
                 <>
                   <AddTodoForm onAddTodo={addTodo}/>
-                  {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>}
+                  {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} onCompleteTodo={completeTodo}/>}
                 </>
               }/>
               <Route path='/new' element={

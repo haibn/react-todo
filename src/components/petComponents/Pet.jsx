@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Pet.module.css"
 import Cat from "./Cat";
+import CatInBox from "./CatInBox";
 import CatFinalBoss from "./CatFinalBoss";
 import LevelOneCat from "./LevelOneCat";
 import LevelTwoCat from "./LevelTwoCat";
@@ -18,25 +19,37 @@ import LevelThirteenCat from "./LevelThirteenCat";
 
 function Pet() {
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.catFinalBossHome}>
-                <CatFinalBoss/>
-                <LevelOneCat/>
-                <LevelTwoCat/>
-                <LevelThreeCat/>
-                <LevelFourCat/>
-                <LevelFiveCat/>
-                <LevelSixCat/>
-                <LevelSevenCat/>
-                <LevelEightCat/>
-                <LevelNineCat/>
-                <LevelTenCat/>
-                <LevelElevenCat/>
-                <LevelTwelveCat/>
-                <LevelThirteenCat/>
-                <div className={styles.catCss}>
-                    <Cat/>
+        <div className={styles.mediaQueryWrapper}>
+            <div className={styles.catHomeWrapper}>
+
+                <div className={styles.levelOneCat}>
+                    <LevelOneCat/>
+                    <div className={styles.levelOneCatCss}>
+                        <Cat/>
+                    </div>
                 </div>
+
+                <div className={styles.levelOneCatInBox}>
+                    <LevelOneCat/>
+                    <div className={styles.levelOneCatInBoxCss}>
+                        <CatInBox/>
+                    </div>
+                </div>
+
+                <div className={styles.levelTwoCat}>
+                    <LevelTwoCat/>
+                    <div className={styles.catCss}>
+                        <Cat/>
+                    </div>
+                </div>
+
+                <div className={styles.finalBossCat}>
+                    <CatFinalBoss/>
+                    <div className={styles.catCss}>
+                        <Cat/>
+                    </div>
+                </div>
+
             </div>
         </div>
     )

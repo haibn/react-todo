@@ -1,7 +1,24 @@
-.catFinalBossHome {
+.catHomeWrapper {
     position: relative;
     width: 100%;
     height: 100%;
+}
+
+.levelOneCatCss {
+    position: absolute;
+    top: 355px;
+    left: 285px;
+    z-index: 2;
+    /* display: none; */
+}
+
+.levelOneCatInBoxCss {
+    position: absolute;
+    top: 360px;
+    left: 278px;
+    z-index: 1;
+    transform: scale(1.05);
+    /* display: none; */
 }
 
 .catCss {
@@ -11,7 +28,7 @@
     z-index: 1;
 }
 
-.wrapper {
+.mediaQueryWrapper {
     transform: scale(1);
     transform-origin: top left;
 }
