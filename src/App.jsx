@@ -153,7 +153,7 @@ function App() {
       }
 
       const data = await response.json();
-      console.log("Deleted record successfully: ", data);
+      // console.log("Deleted record successfully: ", data);
       
     } catch (error) {
       console.log("Failed to delete record: ", error);
@@ -201,7 +201,7 @@ function App() {
       }
 
       const data = await response.json();
-      console.log("Updated completed todos count: ", data);
+      // console.log("Updated completed todos count: ", data);
       
     } catch (error) {
       console.log("Failed updating completed todos count: ", error);
@@ -209,16 +209,19 @@ function App() {
         
   }
   
-  // Remove todo from Airtable and update our todolist without the removed todo.
+  // Mark todo as completed, removes todo and updates AirTable with the total number of completed todos.
   async function completeTodo(id) {
     await removeData(id);
-    // console.log("Completed count before: ", completedTodosCount)
-    setCompletedTodosCount(completedTodosCount + 1);
-    // console.log("completedTodosCountId: ", completedTodosCountId);
-    updateCompletedTodosCount(completedTodosCountId, completedTodosCount + 1);
-    // console.log("Completed count: ", completedTodosCount)
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
+
+    if (completedTodosCount >= 15) {
+      setCompletedTodosCount(1);
+      updateCompletedTodosCount(completedTodosCountId, 1);
+    } else {
+      setCompletedTodosCount(completedTodosCount + 1);
+      updateCompletedTodosCount(completedTodosCountId, completedTodosCount + 1);
+    }
   }
 
   return (
@@ -239,7 +242,7 @@ function App() {
               }/>
             </Routes> 
           </div>
-          <div className={styles.imgPlaceHolder}><Pet/></div>
+          <div className={styles.petContainer}><Pet completedTodosCount={completedTodosCount}/></div>
         </div>
       </BrowserRouter>
     </div>
