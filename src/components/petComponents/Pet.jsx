@@ -179,7 +179,7 @@ function Pet({completedTodosCount}) {
 }
 
 Pet.propTypes = {
-    completedTodosCount: PropTypes.func
+    completedTodosCount: PropTypes.number
 }
 
 export default Pet

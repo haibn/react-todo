@@ -9,7 +9,6 @@
     top: 355px;
     left: 285px;
     z-index: 2;
-    /* display: none; */
 }
 
 .levelOneCatInBoxCss {
@@ -18,7 +17,6 @@
     left: 278px;
     z-index: 1;
     transform: scale(1.05);
-    /* display: none; */
 }
 
 .catCss {

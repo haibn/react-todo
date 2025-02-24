@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import styles from "./App.module.css";
 import TodoList from './components/TodoList'
 import AddTodoForm from './components/AddTodoForm'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import finalBossCat from './assets/cat/levelOneCat.png';
+import NavigationButtons from './components/NavigationButtons';
 import Pet from './components/petComponents/Pet';
 
 function App() {
@@ -227,22 +225,25 @@ function App() {
   return (
     <div className={styles.appContainer}>
       <BrowserRouter>
-        <div className={styles.formImgContainer}>
-          <div className={styles.todoForm}>
-            <h1>Todo List</h1>
-            <Routes>
-              <Route path='/' element={
-                <>
-                  <AddTodoForm onAddTodo={addTodo}/>
-                  {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} onCompleteTodo={completeTodo}/>}
-                </>
-              }/>
-              <Route path='/new' element={
-                <h1>Todo List</h1>
-              }/>
-            </Routes> 
-          </div>
-          <div className={styles.petContainer}><Pet completedTodosCount={completedTodosCount}/></div>
+        <div className={styles.navButtonsRoutesContainer}>
+          <NavigationButtons/>
+          <Routes>
+            <Route path='/' element={
+              <div className={styles.formImgContainer}>
+                <div className={styles.todoForm}>
+                  <h1>Todo List</h1>
+                      <>
+                        <AddTodoForm onAddTodo={addTodo}/>
+                        {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} onCompleteTodo={completeTodo}/>}
+                      </>
+                </div>
+                <Pet completedTodosCount={completedTodosCount}/>
+              </div>
+            }/>
+            <Route path='/pet' element={
+                <div className={styles.petContainer}><Pet completedTodosCount={completedTodosCount}/></div>
+            }/>
+          </Routes> 
         </div>
       </BrowserRouter>
     </div>
