@@ -5,7 +5,7 @@ import AddTodoForm from './components/AddTodoForm'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import NavigationButtons from './components/NavigationButtons';
 import Pet from './components/petComponents/Pet';
-import cashRegisterSound from "./assets/cat/cash_sound.wav"
+import cashRegisterSound from "./assets/cat/cash_sound.mp3"
 
 function App() {
   // TodoList state
@@ -170,8 +170,8 @@ function App() {
   }
 
   // Remove todo from Airtable and update our todolist without the removed todo.
-  async function removeTodo(id) {
-    await removeData(id);
+  function removeTodo(id) {
+    removeData(id);
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
   }
@@ -215,8 +215,8 @@ function App() {
   }
   
   // Mark todo as completed, removes todo and updates AirTable with the total number of completed todos.
-  async function completeTodo(id) {
-    await removeData(id);
+  function completeTodo(id) {
+    removeData(id);
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
     const sound = new Audio(cashRegisterSound);
