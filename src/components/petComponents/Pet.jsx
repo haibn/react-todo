@@ -164,7 +164,7 @@ function Pet({completedTodosCount}) {
                 }
 
                 {
-                    completedTodosCount == 15 && 
+                    completedTodosCount >= 15 && 
                     <div className={styles.finalBossCat}>
                         <CatFinalBoss/>
                         <div className={styles.catCss}>

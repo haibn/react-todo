@@ -10,7 +10,7 @@ function InputWithLabel({todoTitle, handleTitleChange, children}) {
     return (
         <>
             <label htmlFor="todoTitle">{children}</label>
-            <input id="todoTitle" name="title" value={todoTitle} onChange={handleTitleChange} ref={inputRef}></input>
+            <input id="todoTitle" name="title" value={todoTitle} onChange={handleTitleChange} ref={inputRef} className={styles.inputBar}></input>
         </>
     )
 }

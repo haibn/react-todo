@@ -5,6 +5,7 @@ import AddTodoForm from './components/AddTodoForm'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import NavigationButtons from './components/NavigationButtons';
 import Pet from './components/petComponents/Pet';
+import cashRegisterSound from "./assets/cat/cash_sound.wav"
 
 function App() {
   // TodoList state
@@ -15,6 +16,10 @@ function App() {
   const [completedTodosCount, setCompletedTodosCount] = useState(0);
   // CompletedTodosCount's id
   const [completedTodosCountId, setCompletedTodosCountId] = useState("");
+  // Popup state
+  const [showPopup, setShowPopup] = useState(false);
+  // Reset button state
+  const [showResetLevelButton, setShowResetLevelButton] = useState(false);
 
   // Fetching data from AirTable
   async function fetchData() {
@@ -39,8 +44,6 @@ function App() {
       // Stores the number of completed todos (first cell) and its id, and excludes it from fetching
       setCompletedTodosCount(Number(data.records[0].fields.Title));
       setCompletedTodosCountId(data.records[0].id);
-      // console.log("completedTodosCountIdFetch: ", completedTodosCountId)
-      // console.log("data: ", data)
       const filteredData = data.records.slice(1);
 
       // Sort todos in ascending alphabetical order by Title
@@ -72,6 +75,15 @@ function App() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Display reset level button if completed todos reaches 16
+  useEffect(() => {
+    if (completedTodosCount - 1 >= 15) {
+      setShowResetLevelButton(true);
+    } else {
+      setShowResetLevelButton(false);
+    }
+  }, [completedTodosCount]); 
 
   // Update local storage with most recent todoList
   useEffect(() => {
@@ -151,7 +163,6 @@ function App() {
       }
 
       const data = await response.json();
-      // console.log("Deleted record successfully: ", data);
       
     } catch (error) {
       console.log("Failed to delete record: ", error);
@@ -163,12 +174,9 @@ function App() {
     await removeData(id);
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
-    // console.log("Completed count: ", completedTodosCount)
   }
 
   async function updateCompletedTodosCount(id, newCount) {
-    console.log("id: ", id);
-    console.log("newCount: ", newCount);
     const payload = {
       records : [
         {
@@ -199,7 +207,6 @@ function App() {
       }
 
       const data = await response.json();
-      // console.log("Updated completed todos count: ", data);
       
     } catch (error) {
       console.log("Failed updating completed todos count: ", error);
@@ -212,14 +219,39 @@ function App() {
     await removeData(id);
     const newList = todoList.filter((item) => item.id !== id);
     setTodoList(newList);
+    const sound = new Audio(cashRegisterSound);
 
-    if (completedTodosCount >= 15) {
-      setCompletedTodosCount(1);
-      updateCompletedTodosCount(completedTodosCountId, 1);
+    /* 
+    Show popup when completed todos count reaches 15, 
+    else marks todo as completed, removes todo and updates 
+    AirTable with the total number of completed todos.
+    */
+    if (completedTodosCount == 15) {
+      setShowPopup(true); 
+      setCompletedTodosCount(completedTodosCount + 1);
+      updateCompletedTodosCount(completedTodosCountId, completedTodosCount + 1);
     } else {
+      if (!showResetLevelButton) {
+        sound.play();
+      }
+      
       setCompletedTodosCount(completedTodosCount + 1);
       updateCompletedTodosCount(completedTodosCountId, completedTodosCount + 1);
     }
+  }
+
+  // Button to reset pet level to one
+  function resetPetLevel() {
+    setCompletedTodosCount(1);
+    updateCompletedTodosCount(completedTodosCountId, 1);
+    setShowPopup(false);
+    setShowResetLevelButton(false);
+  }
+
+  // Button to close the popup and show the reset button
+  function closePopup() {
+    setShowPopup(false);
+    setShowResetLevelButton(true);
   }
 
   return (
@@ -231,11 +263,19 @@ function App() {
             <Route path='/' element={
               <div className={styles.formImgContainer}>
                 <div className={styles.todoForm}>
+                  {showResetLevelButton && <button className={styles.resetButton} onClick={resetPetLevel}>Reset to Level 1</button>}
                   <h1>Todo List</h1>
-                      <>
-                        <AddTodoForm onAddTodo={addTodo}/>
-                        {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} onCompleteTodo={completeTodo}/>}
-                      </>
+                  {showPopup && (
+                    <div className={styles.popup}>
+                      <p className={styles.popupText}>🎉 Yay! Your pet has reached the final level! 🎉</p>
+                      <button className={styles.resetButton} onClick={resetPetLevel}>Reset to Level 1</button>
+                      <button className={styles.closePopupButton} onClick={closePopup}>Back</button>
+                    </div>
+                  )}
+                  <>
+                    <AddTodoForm onAddTodo={addTodo}/>
+                    {isLoading ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} onCompleteTodo={completeTodo}/>}
+                  </>
                 </div>
                 <Pet completedTodosCount={completedTodosCount}/>
               </div>
