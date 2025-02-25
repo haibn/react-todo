@@ -1,0 +1,21 @@
+.navButtons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    background-color: aliceblue;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navLink {
+    text-decoration: none;
+    color: #2948e4;
+    font-size: 28px;
+    font-weight: 500;
+  }
+  
+  .navLink:hover {
+    color: black;
+  }

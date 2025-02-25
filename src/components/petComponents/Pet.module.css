@@ -1,0 +1,49 @@
+.catHomeWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.levelOneCatCss {
+    position: absolute;
+    top: 355px;
+    left: 285px;
+    z-index: 2;
+}
+
+.levelOneCatInBoxCss {
+    position: absolute;
+    top: 360px;
+    left: 278px;
+    z-index: 1;
+    transform: scale(1.05);
+}
+
+.catCss {
+    position: absolute;
+    top: 260px;
+    left: 305px;
+    z-index: 1;
+}
+
+.mediaQueryWrapper {
+    transform: scale(1);
+    transform-origin: top left;
+}
+
+@media (max-width: 500px) {
+    .mediaQueryWrapper {
+        transform: scale(0.8);
+        transform-origin: center center;
+        /* margin-top: -80px; */
+        /* background-color: red; */
+    }
+}
+
+@media (max-width: 400px) {
+    .mediaQueryWrapper {
+        transform: scale(0.7);
+        transform-origin: center center;
+        /* margin-top: -100px; */
+    }
+}

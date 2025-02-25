@@ -1,0 +1,19 @@
+.catInBoxContainer {
+    height: 64px;
+    width: 62px;
+    overflow: hidden;
+}
+
+.catInBoxSpriteSheet {
+    height: 64px;
+    width: 256px;
+    animation: moveSpriteSheet 1s steps(4) infinite;
+}
+
+@keyframes moveSpriteSheet {
+    from {
+        transform: translate3d(0px, 0, 0);
+    } to {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
